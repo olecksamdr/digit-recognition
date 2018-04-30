@@ -1,7 +1,7 @@
 ### Run Application in Development Mode:
 
 ```sh
-$ export FLASK_APP=server.py
+$ export FLASK_APP=flaskr
 $ export FLASK_ENV=development
 $ flask run
 ```
