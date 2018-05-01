@@ -6,6 +6,12 @@ $ export FLASK_ENV=development
 $ flask run
 ```
 
-### Links
+Or just run `dev.sh` script
 
+```sh
+$ sh dev.sh
+```
+
+### Links
 [Flask documentation](http://flask.pocoo.org/docs/1.0/)
+
