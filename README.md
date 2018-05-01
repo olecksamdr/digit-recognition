@@ -14,4 +14,3 @@ $ sh dev.sh
 
 ### Links
 [Flask documentation](http://flask.pocoo.org/docs/1.0/)
-
