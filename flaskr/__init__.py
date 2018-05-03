@@ -1,6 +1,11 @@
 import os
+import base64
 
-from flask import Flask, render_template
+from io import BytesIO
+from .utils import make_mnist
+from skimage import io as skio
+from sklearn.externals import joblib
+from flask import Flask, render_template, request, make_response, jsonify
 
 def create_app(test_config=None):
     # create and configure the app
@@ -18,5 +23,23 @@ def create_app(test_config=None):
     @app.route('/')
     def hello():
         return render_template('main.html')
+
+    dirname = os.path.dirname(__file__)
+    path = os.path.join(dirname, 'classifiers', 'knn.pkl')
+    knn = joblib.load(path)
+
+    @app.route('/knn', methods=['POST'])
+    def knn_classifier():
+        data = request.get_json(silent=True)['image']
+        data = data[22:]
+
+        # select only alpha channel
+        img = skio.imread(BytesIO(base64.b64decode(data)))[:,:,3]
+
+        img = make_mnist(img)
+
+        number = knn.predict(img.reshape(1, -1))[0]
+
+        return jsonify({ 'number': str(number) })
 
     return app

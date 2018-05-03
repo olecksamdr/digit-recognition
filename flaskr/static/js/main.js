@@ -1,3 +1,18 @@
+const sendData = canvas => () => {
+  const requestHeaers = new Headers({
+    'Content-Type': 'application/json; charset=utf-8', 
+  });
+
+  fetch('/knn', {
+    method: 'POST',
+    headers: requestHeaers,
+    body: JSON.stringify({ 'image': canvas.toDataURL() })
+  })
+  .then(response => response.json())
+  .then(console.log)
+  // .then(alert(text));
+};
+
 const contentLoaded = () => {
     let 
         isDrawing = false,
@@ -5,14 +20,17 @@ const contentLoaded = () => {
 
     const canvas = document.getElementById('canvas');
     const clearCanvasButton = document.getElementById('clear-canvas');
+    const sendButton = document.getElementById('send');
+
+    const ctx = canvas.getContext('2d');
+    
+    sendButton.addEventListener('click', sendData(ctx.canvas));
 
     clearCanvasButton.onclick = function(e) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         points = [];
     }
     
-    ctx = canvas.getContext('2d');    
-
     canvas.onmousedown = function(e) {
         isDrawing = true;
 
@@ -42,7 +60,7 @@ const contentLoaded = () => {
 };
 
 const redraw = (ctx, points) => {
-    ctx.lineWidth = 10;
+    ctx.lineWidth = 30;
     ctx.lineJoin = ctx.lineCap = 'round';
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
