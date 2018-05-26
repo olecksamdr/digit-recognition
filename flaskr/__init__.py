@@ -21,25 +21,31 @@ def create_app(test_config=None):
         pass
 
     @app.route('/')
-    def hello():
+    def main():
         return render_template('main.html')
 
     dirname = os.path.dirname(__file__)
-    path = os.path.join(dirname, 'classifiers', 'knn.pkl')
-    knn = joblib.load(path)
-
-    @app.route('/knn', methods=['POST'])
-    def knn_classifier():
+    knn_path = os.path.join(dirname, 'classifiers', 'knn.pkl')
+    random_forest_path = os.path.join(dirname, 'classifiers', 'random-forest.pkl')
+    
+    models = {
+        'knn': joblib.load(knn_path),
+        'random-forest': joblib.load(random_forest_path),
+    }
+    
+    @app.route('/models/<string:model_name>', methods=['POST'])
+    def knn_classifier(model_name):
         data = request.get_json(silent=True)['image']
         data = data[22:]
 
         # select only alpha channel
         img = skio.imread(BytesIO(base64.b64decode(data)))[:,:,3]
-
         img = make_mnist(img)
-
-        number = knn.predict(img.reshape(1, -1))[0]
-
-        return jsonify({ 'number': str(number) })
+        
+        if model_name in models:
+            number = models[model_name].predict(img.reshape(1, -1))[0]
+            return jsonify({ 'number': str(number) })
+        else:
+            return jsonify({ 'number': "null" })
 
     return app

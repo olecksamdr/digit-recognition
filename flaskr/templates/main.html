@@ -10,14 +10,33 @@
 </head>
 <body>
     <div id="wrapper">
-            <div class="col1">
+        <div class="col1">
+            <form>
                 <div class="center">
-                <canvas id="canvas" width="400" height="400"></canvas>
-                <div class="buttons">
-                    <button id="clear-canvas">Очистити</button>
-                    <button id="send">Розпізнати</button>
+                    <div class="radio-buttons">
+                        <label>
+                            KNN
+                            <input type="radio" name="model" value="knn" id="knn" checked>
+                        </label>
+                        
+                        <label>
+                            Random Forest
+                            <input type="radio" name="model" value="random-forest">                           
+                        </label>
+    
+                        <label>
+                            SVM
+                            <input type="radio" name="model" value="svm">                        
+                        </label>
+                    </div>
+                    
+                    <canvas id="canvas" width="400" height="400"></canvas>
+                    <div class="buttons">
+                        <button type="button" id="clear-canvas">Очистити</button>
+                        <button type="button" id="send">Розпізнати</button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
         <div class="col2">
             <div id="loader">

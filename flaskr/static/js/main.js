@@ -3,14 +3,14 @@ const toggleLoader = () => {
     loader.classList.toggle('show');
 };
 
-const sendData = (canvas, resultEl) => () => {
+const sendData = (model_name, canvas, resultEl) => {
   const requestHeaers = new Headers({
     'Content-Type': 'application/json; charset=utf-8', 
   });
 
   toggleLoader();
 
-  fetch('/knn', {
+  fetch(`/models/${model_name}`, {
     method: 'POST',
     headers: requestHeaers,
     body: JSON.stringify({ 'image': canvas.toDataURL() })
@@ -32,10 +32,17 @@ const contentLoaded = () => {
     const clearButton = document.getElementById('clear-canvas');
     const sendButton = document.getElementById('send');
     const resultEl = document.getElementById('result');
+    const redioButtons = document.getElementsByName('model');
 
     const ctx = canvas.getContext('2d');
     
-    sendButton.addEventListener('click', sendData(ctx.canvas, resultEl));
+    sendButton.addEventListener('click', () => {
+        model_name = document.querySelector('input[name="model"]:checked').value;
+        sendData(model_name, ctx.canvas, resultEl);
+    });
+    redioButtons.forEach(radio => radio.addEventListener('change', ({ target }) => 
+        sendData(target.value, ctx.canvas, resultEl))
+    )
 
     clearButton.onclick = function(e) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
