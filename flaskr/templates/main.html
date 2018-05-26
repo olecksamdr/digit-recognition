@@ -10,9 +10,22 @@
 </head>
 <body>
     <div id="wrapper">
-        <canvas id="canvas" width="400" height="400"></canvas>
-        <button id="clear-canvas">Clear</button>
-        <button id="send">Send</button>        
+            <div class="col1">
+                <div class="center">
+                <canvas id="canvas" width="400" height="400"></canvas>
+                <div class="buttons">
+                    <button id="clear-canvas">Очистити</button>
+                    <button id="send">Розпізнати</button>
+                </div>
+            </div>
+        </div>
+        <div class="col2">
+            <div id="loader">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+            </div>
+            <div id="result"><!-- predicted number will ne placed here --></div>
+        </div>
     </div>
 </body>
 </html>

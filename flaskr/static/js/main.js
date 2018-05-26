@@ -1,7 +1,14 @@
-const sendData = canvas => () => {
+const toggleLoader = () => {
+    const loader = document.getElementById('loader');
+    loader.classList.toggle('show');
+};
+
+const sendData = (canvas, resultEl) => () => {
   const requestHeaers = new Headers({
     'Content-Type': 'application/json; charset=utf-8', 
   });
+
+  toggleLoader();
 
   fetch('/knn', {
     method: 'POST',
@@ -9,8 +16,11 @@ const sendData = canvas => () => {
     body: JSON.stringify({ 'image': canvas.toDataURL() })
   })
   .then(response => response.json())
-  .then(console.log)
-  // .then(alert(text));
+  .then((result) => {
+      toggleLoader();
+      return result;
+  })
+  .then(result => resultEl.innerText = result.number)
 };
 
 const contentLoaded = () => {
@@ -19,15 +29,17 @@ const contentLoaded = () => {
         points = [];
 
     const canvas = document.getElementById('canvas');
-    const clearCanvasButton = document.getElementById('clear-canvas');
+    const clearButton = document.getElementById('clear-canvas');
     const sendButton = document.getElementById('send');
+    const resultEl = document.getElementById('result');
 
     const ctx = canvas.getContext('2d');
     
-    sendButton.addEventListener('click', sendData(ctx.canvas));
+    sendButton.addEventListener('click', sendData(ctx.canvas, resultEl));
 
-    clearCanvasButton.onclick = function(e) {
+    clearButton.onclick = function(e) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        resultEl.innerText = ''
         points = [];
     }
     
