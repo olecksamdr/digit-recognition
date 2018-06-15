@@ -15,9 +15,11 @@ def main():
 dirname = os.path.dirname(__file__)
 knn_path = os.path.join(dirname, 'classifiers', 'knn.pkl')
 random_forest_path = os.path.join(dirname, 'classifiers', 'random-forest.pkl')
+svm_path = os.path.join(dirname, 'classifiers', 'svm.pkl')
 
 models = {
     'knn': joblib.load(knn_path),
+    'svm': joblib.load(svm_path),
     'random-forest': joblib.load(random_forest_path),
 }
 
