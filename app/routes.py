@@ -33,6 +33,9 @@ def knn_classifier(model_name):
     img = make_mnist(img)
     
     if model_name in models:
+        if model_name == 'svm':
+            img = img / 255
+
         number = models[model_name].predict(img.reshape(1, -1))[0]
         return jsonify({ 'number': str(number) })
     else:
